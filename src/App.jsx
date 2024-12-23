@@ -68,7 +68,7 @@ function App() {
             </form>
             {error && <p className="error">{error}</p>}
             {shortenedUrl && (
-                <div>
+                <div className="shortened-url">
                     <p>Shortened URL: {shortenedUrl}</p>
                     <button onClick={copyToClipboard}>Copy to Clipboard</button>
                 </div>
