@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import { Link } from 'react-router-dom';
 
 function App() {
     const [url, setUrl] = useState('')
@@ -73,6 +74,9 @@ function App() {
                     <button onClick={copyToClipboard}>Copy to Clipboard</button>
                 </div>
             )}
+            <nav>
+                <Link to="/">Go to List</Link>
+            </nav>
         </div>
     )
 }
