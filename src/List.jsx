@@ -73,6 +73,7 @@ const List = () => {
                         <th>ID</th>
                         <th>Long URL</th>
                         <th>Short URL</th>
+                        <th>Category</th>
                         <th>Expiration Date</th>
                         <th>Open Count</th>
                     </tr>
@@ -83,6 +84,7 @@ const List = () => {
                             <td className="table-cell id">{row.id}</td>
                             <td className="table-cell truncate">{row.longUrl}</td>
                             <td className="table-cell short-url">{row.shortUrl}</td>
+                            <td className="table-cell">{row.category}</td>
                             <td className={`table-cell ${isDateExpired(row.expirationDate) ? 'expired' : 'active'}`}>
                                 {row.expirationDate}
                             </td>
