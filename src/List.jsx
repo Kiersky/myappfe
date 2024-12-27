@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const List = () => {
     const [urlData, setUrlData] = useState([]);
-    const [inputUrl, setInputUrl] = useState('');
+    const [prompt, setPrompt] = useState('');
     const [answer, setAnswer] = useState('');
     const [confirmed, setConfirmed] = useState(false);
 
@@ -19,15 +19,49 @@ const List = () => {
         };
 
         fetchData();
+        const interval = setInterval(fetchData, 60000); // Refresh every 60 seconds
+        return () => clearInterval(interval); // Cleanup interval on component unmount
     }, []);
 
-    const handleSubmit = (e) => {
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     setAnswer('Generated short URL: short.ly/abc123');
+    // };
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setAnswer('Generated short URL: short.ly/abc123');
+        try {
+            const response = await fetch('http://localhost:5001/generate_query', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text_input: prompt }),
+            });
+            const data = await response.json();
+            setAnswer(` ${data.query}`);
+            setConfirmed(false);
+        } catch (error) {
+            console.error('Error generating query:', error);
+        }
     };
 
-    const handleConfirm = () => {
-        setConfirmed(true);
+    const handleConfirm = async () => {
+        try {
+            const response = await fetch('http://localhost:5001/confirm_query', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ query: answer }),
+            });
+            if (response.ok) {
+                setConfirmed(true);
+            } else {
+                console.error('Error confirming query:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error confirming query:', error);
+        }
     };
 
     const isDateExpired = (date) => {
@@ -40,13 +74,13 @@ const List = () => {
                 <div className="input-group">
                     <input
                         type="text"
-                        value={inputUrl}
-                        onChange={(e) => setInputUrl(e.target.value)}
-                        placeholder="Enter your URL"
+                        value={prompt}
+                        onChange={(e) => setPrompt(e.target.value)}
+                        placeholder="Enter your prompt"
                         className="url-input"
                     />
                     <button type="submit" className="shorten-button">
-                        Shorten URL
+                        Enter
                     </button>
                 </div>
             </form>
@@ -54,7 +88,7 @@ const List = () => {
             {answer && (
                 <div className="answer-section">
                     <div className="answer-content">
-                        <p className="answer-text">{answer}</p>
+                        <p className="answer-text">Generated query:{answer}</p>
                         <button
                             onClick={handleConfirm}
                             disabled={confirmed}
