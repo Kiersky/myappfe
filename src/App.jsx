@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 function App() {
     const [url, setUrl] = useState('')
+    const [suffix, setSuffix] = useState('')
     const [shortenedUrl, setShortenedUrl] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
@@ -23,7 +24,7 @@ function App() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ url }),
+                body: JSON.stringify({ url, suffix }),
             })
             const data = await response.json()
             setShortenedUrl(data.shortUrl)
@@ -45,10 +46,13 @@ function App() {
     }
 
     const handleInputChange = (e) => {
-        setUrl(e.target.value)
-        //if (e.target.value === '') {
+        const {name, value} = e.target
+        if(name==='url'){
+            setUrl(value)
             setShortenedUrl('')
-        //}
+        } else if (name==='suffix'){
+            setSuffix(value)
+        }
     }
     const copyToClipboard = () => {
         navigator.clipboard.writeText(shortenedUrl)
@@ -59,9 +63,17 @@ function App() {
             <form onSubmit={handleSubmit}>
                 <input
                     type="url"
+                    name="url"
                     value={url}
                     onChange={handleInputChange}
                     placeholder="Enter URL"
+                />
+                <input
+                    type="text"
+                    name="suffix"
+                    value={suffix}
+                    onChange={handleInputChange}
+                    placeholder="Enter suffix"
                 />
                 <button type="submit" disabled={loading}>
                     {loading ? 'Loading...' : 'Submit'}

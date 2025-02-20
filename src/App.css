@@ -5,7 +5,7 @@
   text-align: center;
 }
 body {
-  background-image: url('src/assets/dwarfs.png');
+  background-image: url('src/assets/factory.png');
   /* background-color: #ffffff; Set this to your desired background color */
   background-size: cover; /* Ensures the image covers the entire background */
   background-position: center; /* Centers the image */
@@ -19,7 +19,8 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
 }
 
-input[type="url"] {
+input[type="url"],
+input[type="text"] {
   padding: 0.5em;
   width: 80%;
   margin-bottom: 1em;
