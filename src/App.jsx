@@ -47,10 +47,15 @@ function App() {
 
     const handleInputChange = (e) => {
         const {name, value} = e.target
-        if(name==='url'){
+        if(name==='url'&&value===''){
             setUrl(value)
             setShortenedUrl('')
-        } else if (name==='suffix'){
+            setSuffix('')
+        } else if (name==='url') {
+            setUrl(value)
+            setShortenedUrl('')
+        }
+        else if (name==='suffix'){
             setSuffix(value)
         }
     }
